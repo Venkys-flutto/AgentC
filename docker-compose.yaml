@@ -1,0 +1,42 @@
+services:
+  datacollector:
+    build:
+      context: ./1.DataCollector
+    ports:
+      - "5500:5500"
+    environment:
+      - ENV_VAR=VALUE
+    depends_on:
+      - promptgen
+
+  promptgen:
+    build:
+      context: ./2.PromptGen
+    ports:
+      - "5600:5600"
+    environment:
+      - ENV_VAR=VALUE
+    depends_on:
+
+      - llmengine
+      - resultaggregator
+
+  llmengine:
+    build:
+      context: ./3.LLMEngine
+    ports:
+      - "5700:5700"
+    environment:
+      - ENV_VAR=VALUE
+
+  resultaggregator:
+    build:
+      context: ./4.ResultAggregator
+    ports:
+      - "5800:5800"
+    environment:
+      - ENV_VAR=VALUE
+
+networks:
+  default:
+    driver: bridge
