@@ -10,7 +10,6 @@ from fastapi.responses import StreamingResponse
 load_dotenv()  # This will load the variables from .env
 
 
-
 # Using OpenAI Models
 from langchain_openai import ChatOpenAI
 
