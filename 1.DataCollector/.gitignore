@@ -42,7 +42,7 @@ pip-delete-this-directory.txt
 .python-version
 
 # dotenv
-
+.env
 
 # SQL database files
 *.sqlite3
