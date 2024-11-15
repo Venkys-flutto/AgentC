@@ -58,17 +58,6 @@ services:
     env_file:
       - ./4.ResultAggregator/.env 
 
-  visualengine:
-    build:
-      context: ./5.VisualEngine
-    ports:
-      - "5900:5900"
-    environment:
-      - ENV_VAR=VALUE
-    env_file:
-      - ./5.VisualEngine/.env 
-
-
 networks:
   default:
     driver: bridge
