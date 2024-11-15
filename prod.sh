@@ -5,4 +5,4 @@ git checkout prod
 git pull origin prod
 docker-compose down
 docker-compose up -d --build
-echo "Production environment updated and restarted. "
+echo "Production environment updated and restarted."
