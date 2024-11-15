@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const { exec } = require('child_process');
 
 const app = express();
-const PORT = 8000;
+const PORT = 9000;
 
 // Your GitHub webhook secret
 const GITHUB_SECRET = '';
@@ -42,7 +42,7 @@ app.use((req, res, next) => {
 });
 
 // Route to handle GitHub webhook events
-app.post('/prod', (req, res) => {
+app.post('/stage', (req, res) => {
   const event = req.headers['x-github-event'];
   const payload = req.body;
 
@@ -55,7 +55,7 @@ app.post('/prod', (req, res) => {
     console.log('Push event detected. Running prod.sh...');
     
     // Execute the shell script
-    exec('./prod.sh', (error, stdout, stderr) => {
+    exec('./stage.sh', (error, stdout, stderr) => {
       if (error) {
         console.error(`Error executing prod.sh: ${error.message}`);
         return;
