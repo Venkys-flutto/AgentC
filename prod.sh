@@ -4,5 +4,5 @@ git fetch origin
 git checkout prod
 git pull origin prod
 docker-compose down
-docker-compose up -d --build --no-cache
+docker-compose build --no-cache
 echo "Production environment updated and restarted. "
