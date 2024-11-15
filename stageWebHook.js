@@ -7,7 +7,7 @@ const app = express();
 const PORT = 8000;
 
 // Your GitHub webhook secret
-const GITHUB_SECRET = 'your_secret_here';
+const GITHUB_SECRET = 'stage';
 
 // Middleware to parse JSON with raw body saving for signature verification
 app.use(bodyParser.json({
