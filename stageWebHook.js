@@ -26,6 +26,7 @@ function verifySignature(req, res, buf) {
   const hmac = crypto.createHmac('sha256', GITHUB_SECRET);
   const digest = 'sha256=' + hmac.update(buf).digest('hex');
 
+  // Use timingSafeEqual to prevent timing attacks
   if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(digest))) {
     throw new Error('Invalid signature');
   }
