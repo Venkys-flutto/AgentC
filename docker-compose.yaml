@@ -6,6 +6,8 @@ services:
     - "3000:3000"
     environment:
       - ENV_VAR=VALUE
+    env_file:
+      - ./0.Frontend/.env 
     depends_on:
       - datacollector
 
@@ -17,6 +19,8 @@ services:
       - "5500:5500"
     environment:
       - ENV_VAR=VALUE
+    env_file:
+      - ./1.DataCollector/.env 
     depends_on:
       - promptgen
 
@@ -27,6 +31,8 @@ services:
       - "5600:5600"
     environment:
       - ENV_VAR=VALUE
+    env_file:
+      - ./2.PromptGen/.env 
     depends_on:
 
       - llmengine
@@ -39,6 +45,8 @@ services:
       - "5700:5700"
     environment:
       - ENV_VAR=VALUE
+    env_file:
+      - ./3.LLMEngine/.env 
 
   resultaggregator:
     build:
@@ -47,6 +55,19 @@ services:
       - "5800:5800"
     environment:
       - ENV_VAR=VALUE
+    env_file:
+      - ./4.ResultAggregator/.env 
+
+  visualengine:
+    build:
+      context: ./5.VisualEngine
+    ports:
+      - "5900:5900"
+    environment:
+      - ENV_VAR=VALUE
+    env_file:
+      - ./5.VisualEngine/.env 
+
 
 networks:
   default:
