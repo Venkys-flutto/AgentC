@@ -7,12 +7,13 @@ const app = express();
 const PORT = 9000;
 
 // Your GitHub webhook secret
-const GITHUB_SECRET = '';
+const GITHUB_SECRET = 'stage';
 
 // Middleware to parse JSON with raw body saving for signature verification
 app.use(bodyParser.json({
-  verify: (req, res, buf) => {
-    req.rawBody = buf;  // Store raw body for signature verification
+  verify: (req, res, buf, encoding) => {
+    req.rawBody = buf.toString(encoding || 'utf-8');
+    console.log('Raw Body:', req.rawBody);
   }
 }));
 
@@ -20,16 +21,23 @@ app.use(bodyParser.json({
 function verifySignature(req, res, buf) {
   const signature = req.headers['x-hub-signature-256'];
   if (!signature) {
+    console.error('No X-Hub-Signature-256 header');
     throw new Error('No X-Hub-Signature-256 header');
   }
 
   const hmac = crypto.createHmac('sha256', GITHUB_SECRET);
   const digest = 'sha256=' + hmac.update(buf).digest('hex');
 
+  // Log for debugging
+  console.log('Computed digest:', digest);
+  console.log('Received signature:', signature);
+
   if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(digest))) {
+    console.error('Signatures do not match!');
     throw new Error('Invalid signature');
   }
 }
+
 
 // Middleware to verify the signature
 app.use((req, res, next) => {
