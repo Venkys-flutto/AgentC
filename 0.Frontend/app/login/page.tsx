@@ -182,7 +182,7 @@ function LoginContent() {
                     </>
                   )}
                 </Button>
-                <Button 
+                {/* <Button 
   variant="outline" 
   className="w-full"
   onClick={() => handleOAuthSignIn('linkedin')}
@@ -204,7 +204,7 @@ function LoginContent() {
       Continue with LinkedIn
     </>
                   )}
-                </Button>
+                </Button> */}
               </div>
 
               <div className="relative">

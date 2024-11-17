@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { BookOpen, HeadphonesIcon, GraduationCap, Users, Globe, Cpu, Menu } from "lucide-react" 
+import { BookOpen, HeadphonesIcon, GraduationCap, Users, Globe, Cpu, Menu } from "lucide-react"
 import Link from "next/link"
 //import { Label } from "@/components/ui/label"
 import { useSession } from 'next-auth/react'
@@ -16,7 +16,7 @@ import { useRouter } from 'next/navigation'
 export default function LandingPage() {
   const { data: session } = useSession()
   const [showMobileMenu, setShowMobileMenu] = useState(false)
-  
+
   const router = useRouter()
 
   return (
@@ -40,9 +40,9 @@ export default function LandingPage() {
             <ProfileMenu />
           ) : (
             <div className="flex justify-center text-gray-600">
-            <Button variant="outline"  size="sm" className="w-full" onClick={() => router.push('/login')}>
-              Login
-            </Button>
+              <Button variant="outline" size="sm" className="w-full" onClick={() => router.push('/login')}>
+                Login
+              </Button>
             </div>
           )}
         </nav>
@@ -79,7 +79,7 @@ export default function LandingPage() {
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2">
-                
+
                 <h1 className="text-2xl font-bold tracking-tighter sm:text-3xl md:text-4xl lg:text-5xl/none bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-100 animate-fade-in px-4 md:px-[100px]">
                   Revolutionize Your Business Operations with AI
                 </h1>
@@ -88,9 +88,9 @@ export default function LandingPage() {
                 </p>
               </div>
               <div className="space-x-4 animate-fade-in-up delay-200">
-                <Button 
-                  size="lg" 
-                  variant="default" 
+                <Button
+                  size="lg"
+                  variant="default"
                   className="bg-secondary hover:bg-secondary-foreground hover:scale-105 transition-transform text-white"
                   onClick={() => {
                     if (session?.user) {
@@ -102,14 +102,14 @@ export default function LandingPage() {
                 >
                   Get Started
                 </Button>
-                
-                <Button 
-                  size="lg" 
-                  variant="outline" 
+
+                <Button
+                  size="lg"
+                  variant="outline"
                   className="bg-white/10 backdrop-blur-sm text-white border-white/20 hover:bg-white/20 hover:scale-105 transition-transform"
-                  onClick={() => router.push('/login')}
+                  onClick={() => router.push('/responsetest')}
                 >
-                  Learn More
+                  Response Test
                 </Button>
               </div>
             </div>
@@ -307,15 +307,15 @@ export default function LandingPage() {
               </div>
               <div className="w-full max-w-sm space-y-2 px-4">
                 <form className="flex flex-col space-y-4">
-                  <Input 
-                    className="max-w-lg flex-1 transition-all duration-300 focus:ring-2 focus:ring-primary/50 hover:border-primary/50 bg-white/80 backdrop-blur-sm" 
-                    placeholder="Your name" 
-                    type="text" 
+                  <Input
+                    className="max-w-lg flex-1 transition-all duration-300 focus:ring-2 focus:ring-primary/50 hover:border-primary/50 bg-white/80 backdrop-blur-sm"
+                    placeholder="Your name"
+                    type="text"
                   />
-                  <Input 
-                    className="max-w-lg flex-1 transition-all duration-300 focus:ring-2 focus:ring-primary/50 hover:border-primary/50 bg-white/80 backdrop-blur-sm" 
-                    placeholder="Your email" 
-                    type="email" 
+                  <Input
+                    className="max-w-lg flex-1 transition-all duration-300 focus:ring-2 focus:ring-primary/50 hover:border-primary/50 bg-white/80 backdrop-blur-sm"
+                    placeholder="Your email"
+                    type="email"
                   />
                   <Button type="submit" className="w-full">Request Demo</Button>
                 </form>
@@ -338,7 +338,7 @@ export default function LandingPage() {
         </nav>
       </footer>
     </div>
-  
+
 
   )
 }
