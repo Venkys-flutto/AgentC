@@ -3,14 +3,13 @@ services:
     build:
       context: ./0.Frontend
     ports:
-    - "3000:3000"
+      - "3000:3000"
     environment:
       - ENV_VAR=VALUE
     env_file:
-      - ./0.Frontend/.env 
+      - ./0.Frontend/.env
     depends_on:
       - datacollector
-
 
   datacollector:
     build:
@@ -20,7 +19,7 @@ services:
     environment:
       - ENV_VAR=VALUE
     env_file:
-      - ./1.DataCollector/.env 
+      - ./1.DataCollector/.env
     depends_on:
       - promptgen
 
@@ -32,7 +31,7 @@ services:
     environment:
       - ENV_VAR=VALUE
     env_file:
-      - ./2.PromptGen/.env 
+      - ./2.PromptGen/.env
     depends_on:
 
       - llmengine
@@ -46,7 +45,7 @@ services:
     environment:
       - ENV_VAR=VALUE
     env_file:
-      - ./3.LLMEngine/.env 
+      - ./3.LLMEngine/.env
 
   resultaggregator:
     build:
@@ -56,7 +55,7 @@ services:
     environment:
       - ENV_VAR=VALUE
     env_file:
-      - ./4.ResultAggregator/.env 
+      - ./4.ResultAggregator/.env
 
 networks:
   default:
