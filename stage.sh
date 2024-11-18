@@ -19,14 +19,9 @@ log "=== Starting Stage Deployment ==="
 # Navigate to the repository
 cd $REPO_PATH || { log "ERROR: Repository path not found"; exit 1; }
 
-# Check for uncommitted changes and stash if needed
-if [[ $(git status --porcelain) ]]; then
-  log "Uncommitted changes detected. Stashing changes."
-  if ! git stash; then
-    log "ERROR: Failed to stash changes."
-    exit 1
-  fi
-fi
+# Stash any local changes
+git stash --include-untracked
+log "Stashed local changes."
 
 # Fetch the latest changes
 if git fetch origin; then
@@ -36,27 +31,19 @@ else
   exit 1
 fi
 
-# Ensure the main branch is up-to-date
-if git checkout $MAIN_BRANCH && git pull --no-rebase origin $MAIN_BRANCH; then
+# Ensure main is up-to-date
+if git checkout $MAIN_BRANCH && git pull origin $MAIN_BRANCH; then
   log "Checked out and updated $MAIN_BRANCH."
 else
   log "ERROR: Failed to update $MAIN_BRANCH."
   exit 1
 fi
 
-# Merge main into stage
-if git checkout $STAGE_BRANCH && git merge $MAIN_BRANCH -m "Auto-merged $MAIN_BRANCH into $STAGE_BRANCH"; then
-  log "Merged $MAIN_BRANCH into $STAGE_BRANCH."
+# Switch to the stage branch and reset it to match the main branch
+if git checkout $STAGE_BRANCH && git reset --hard origin/$MAIN_BRANCH; then
+  log "Pulled latest changes from $MAIN_BRANCH into $STAGE_BRANCH."
 else
-  log "ERROR: Failed to merge $MAIN_BRANCH into $STAGE_BRANCH."
-  exit 1
-fi
-
-# Reapply any stashed changes
-if git stash pop; then
-  log "Re-applied stashed changes."
-else
-  log "ERROR: Failed to re-apply stashed changes."
+  log "ERROR: Failed to update $STAGE_BRANCH."
   exit 1
 fi
 
@@ -67,5 +54,9 @@ else
   log "ERROR: Failed to restart the stage environment."
   exit 1
 fi
+
+# Apply the stashed changes (if any)
+git stash pop
+log "Applied stashed changes."
 
 log "=== Stage Deployment Completed ==="
