@@ -1,2 +1,2 @@
 This is the Stage branch of flutto.ai
-Staging is done.
+Staging setup is done
