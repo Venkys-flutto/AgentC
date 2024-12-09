@@ -49,6 +49,15 @@ services:
     environment:
       - ENV_VAR=VALUE
 
+  
+  visualengine:
+    build:
+      context: ./5.VisualEngine
+    ports:
+      - "5900:5900"
+    environment:
+      - ENV_VAR=VALUE
+
 networks:
   default:
     driver: bridge
