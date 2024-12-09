@@ -67,7 +67,7 @@ async def prompt_gen(request: PromptRequest):
         structured_prompt = create_prompt(request.prompt, request.parameters)
 
         # Initialize the LangChain model
-        model = ChatOpenAI(temperature=0.7, model="chatgpt-4o-latest",max_tokens=16000)
+        model = ChatOpenAI(api_key="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", temperature=0.7, model="chatgpt-4o-latest",max_tokens=16000)
 
         # Create a prompt template
         prompt_template = ChatPromptTemplate.from_template("{prompt}")

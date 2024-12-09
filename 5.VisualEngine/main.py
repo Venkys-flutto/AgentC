@@ -62,7 +62,6 @@ def get_labels_from_content(content: str):
         print()
         lines = output.split("\n")
         
-        
         # Extract center node (first label) and subnodes (remaining labels)
         center_node = lines[0].strip()
         sub_nodes = [line.strip() for line in lines[1:] if line.strip()]
