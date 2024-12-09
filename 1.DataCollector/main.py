@@ -52,8 +52,10 @@ async def send_user_prompt_and_parameters(request: UserRequest):
 
         # Call the LLMEngine service with the generated prompt
         response = requests.post("http://llmengine:5700/generate", json={"prompt": prompt})
-        
-        return {"response": response.json()}
+
+        # Generate graph with output
+        graph_code = requests.post("http://visualengine:5900/api/nodes", json={"content": response.text})
+        return {"response": [response.json(), graph_code.json()]}
         
     except requests.exceptions.HTTPError as e:
         print(f"HTTPError: {e.response.status_code} - {e.response.text}")
