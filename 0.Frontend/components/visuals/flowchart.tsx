@@ -1,6 +1,5 @@
 import React from "react";
 import ReactFlow, {
-  MiniMap,
   Controls,
   Background,
   Handle,
@@ -32,7 +31,7 @@ const initialNodes: Node<CustomNodeData>[] = [
       borderRadius: "12px",
       border: "1px solid #007BFF",
       fontSize: "20px",
-      textAlign: "center" as "center",
+      textAlign: "center" as const,
       boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
     },
   },
@@ -63,7 +62,7 @@ const initialNodes: Node<CustomNodeData>[] = [
         borderRadius: "10px",
         border: "1px solid #007BFF",
         fontSize: "16px",
-        textAlign: "center" as "center", // Explicitly cast "center" as a valid TextAlign value
+        textAlign: "center" as const, // Explicitly cast "center" as a valid TextAlign value
         boxShadow: "0 3px 8px rgba(0, 0, 0, 0.2)",
       },
     };
@@ -122,10 +121,11 @@ const CustomNode: React.FC<{ data: CustomNodeData }> = ({ data }) => {
 const nodeTypes = { custom: CustomNode };
 
 const Flowchart: React.FC = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState<CustomNodeData>(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, onNodesChange] = useNodesState<CustomNodeData>(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(initialEdges);
 
-  const onConnect = (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds));
+  const onConnect = (params: Edge | Connection) =>
+    setEdges((eds: Edge[]) => addEdge(params, eds));
 
   return (
     <div style={{ height: "100vh", background: "#f9f9f9" }}>
@@ -133,7 +133,7 @@ const Flowchart: React.FC = () => {
         nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypes}
-        onNodesChange={onNodesChange}
+        // onEdgesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         fitView
@@ -147,3 +147,146 @@ const Flowchart: React.FC = () => {
 };
 
 export default Flowchart;
+
+
+//************ this is extracting data from the backend */
+
+// import React, { useState, useEffect } from "react";
+// import ReactFlow, {
+//   MiniMap,
+//   Controls,
+//   Background,
+//   Handle,
+//   useNodesState,
+//   useEdgesState,
+//   addEdge,
+//   Connection,
+//   Edge,
+//   Node,
+//   Position,
+// } from "react-flow-renderer";
+// import axios from "axios";
+// import "./styles.css";
+
+// // Define the custom node data type
+// interface CustomNodeData {
+//   label: string;
+//   editable?: string;
+// }
+
+// // Custom Node Component
+// const CustomNode: React.FC<{ data: CustomNodeData }> = ({ data }) => {
+//   return (
+//     <div
+//       style={{
+//         padding: "10px",
+//         borderRadius: "5px",
+//         textAlign: "center",
+//         fontSize: "14px",
+//         background: "#fff",
+//         border: "1px solid #ccc",
+//         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+//         transition: "transform 0.2s ease-in-out",
+//         cursor: "pointer",
+//       }}
+//     >
+//       <strong>{data.label}</strong>
+//       <Handle
+//         type="source"
+//         position={Position.Bottom}
+//         style={{
+//           background: "#007BFF",
+//           width: "10px",
+//           height: "10px",
+//         }}
+//       />
+//       <Handle
+//         type="target"
+//         position={Position.Top}
+//         style={{
+//           background: "#007BFF",
+//           width: "10px",
+//           height: "10px",
+//         }}
+//       />
+//     </div>
+//   );
+// };
+
+// const nodeTypes = { custom: CustomNode };
+
+// const Flowchart: React.FC = () => {
+//   const [nodes, setNodes, onNodesChange] = useNodesState<CustomNodeData>([]);
+//   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     // Fetch data from the backend
+//     const fetchData = async () => {
+//       try {
+//         const response = await axios.get("http://localhost:8000/diagram");
+//         const { nodes: fetchedNodes, edges: fetchedEdges } = response.data;
+
+//         // Map backend nodes to React Flow nodes
+//         const mappedNodes = fetchedNodes.map((node: any) => ({
+//           ...node,
+//           type: "custom",
+//           style: {
+//             background: "#FFD700",
+//             padding: "3px",
+//             borderRadius: "10px",
+//             border: "1px solid #007BFF",
+//             fontSize: "16px",
+//             textAlign: "center" as "center",
+//             boxShadow: "0 3px 8px rgba(0, 0, 0, 0.2)",
+//             ...node.style, // Use backend-provided styles if available
+//           },
+//         }));
+
+//         // Map backend edges to React Flow edges
+//         const mappedEdges = fetchedEdges.map((edge: any) => ({
+//           ...edge,
+//           type: "smoothstep",
+//           animated: true,
+//         }));
+
+//         setNodes(mappedNodes);
+//         setEdges(mappedEdges);
+//       } catch (error) {
+//         console.error("Error fetching diagram data:", error);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchData();
+//   }, []);
+
+//   const onConnect = (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds));
+
+//   return (
+//     <div style={{ height: "100vh", background: "#f9f9f9" }}>
+//       {loading ? (
+//         <div className="flex items-center justify-center h-full text-gray-500">
+//           Loading diagram...
+//         </div>
+//       ) : (
+//         <ReactFlow
+//           nodes={nodes}
+//           edges={edges}
+//           nodeTypes={nodeTypes}
+//           onNodesChange={onNodesChange}
+//           onEdgesChange={onEdgesChange}
+//           onConnect={onConnect}
+//           fitView
+//           style={{ fontFamily: "Arial, sans-serif", color: "#333" }}
+//         >
+//           <Controls />
+//           <Background />
+//         </ReactFlow>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default Flowchart;
